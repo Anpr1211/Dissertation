@@ -1,0 +1,53 @@
+---
+title: "EDA of Monthly milk production dataset"
+output: html_notebook
+---
+```{r}
+library(tsdl)
+library(forecast)
+library(dygraphs)
+```
+
+```{r}
+d = subset(tsdl, description="Monthly milk production")
+
+# Details of the dataset
+print(attributes(d[[1]])$description)
+```
+
+```{r}
+d[[1]]
+```
+
+```{r}
+autoplot(d[[1]])
+```
+```{r}
+class(d[[1]])
+```
+```{r}
+plot(d[[1]])
+abline(reg=lm(d[[1]]~time(d[[1]]))) # fit a trend line
+```
+
+```{r}
+cycle(d[[1]])
+```
+```{r}
+ts_decom = decompose(d[[1]])
+plot(ts_decom)
+```
+
+```{r}
+sa = seasadj(ts_decom)
+seasonplot(sa, 12, col=rainbow(12), year.labels=TRUE, main="Seasonal plot: Airpassengers") # seasonal frequency set as 12 for monthly data.
+```
+
+```{r}
+boxplot(d[[1]]~cycle(d[[1]]))
+```
+
+
+
+
+
